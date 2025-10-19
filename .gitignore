@@ -1,0 +1,25 @@
+# --- Secrets ---
+# Never commit environment variables containing secrets like API keys or passwords.
+.env
+
+# --- Dependencies ---
+# These folders contain installed packages. They should be installed by the deployment
+# server or locally during development using package manifests (package.json, yarn.lock).
+# Excluding them keeps the repository small and clean.
+node_modules
+frontend/node_modules
+backend/node_modules
+
+# --- Build Artifacts & Caches ---
+# Next.js build output and cache directory. Regenerated during the build process.
+frontend/.next
+
+# --- Docker ---
+# Persisted database data volume managed by Docker Compose. Not part of the source code.
+postgres_data
+
+# --- Operating System Files ---
+# macOS specific file for folder custom attributes.
+.DS_Store
+# Log files, which can be generated during runtime or debugging.
+*.log

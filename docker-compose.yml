@@ -1,0 +1,60 @@
+# Docker Compose file for a multi-service application.
+# This file defines and orchestrates the Frontend, Backend, and Database services.
+version: "3.8"
+
+services:
+  # --- SERVICE 1: FRONTEND (NEXT.JS) ---
+  # This service builds and runs the Next.js user interface.
+  frontend:
+    build: ./frontend # Build the image from the Dockerfile in the './frontend' directory
+    container_name: frontend_app
+    ports:
+      - "3001:3001" # Map port 3001 on the host to port 3001 in the container
+    volumes:
+      # Mount the local frontend code into the container for live-reloading during development
+      - ./frontend:/usr/src/app
+      # Use a named volume for node_modules to prevent local modules from overwriting container modules
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+    # Ensure the backend service starts up before the frontend does
+    depends_on:
+      - backend
+
+  # --- SERVICE 2: BACKEND (EXPRESS API) ---
+  # This service builds and runs the Node.js/Express API.
+  backend:
+    build: ./backend # Build from the './backend' directory
+    container_name: backend_app
+    ports:
+      - "3000:3000" # Map port 3000 for the API
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      # Load environment variables (API keys, DB credentials) from the .env file
+      - ./.env
+    restart: unless-stopped
+    # Ensure the database service starts up before the backend does
+    depends_on:
+      - db
+
+  # --- SERVICE 3: DATABASE (POSTGRES) ---
+  # This service runs the PostgreSQL database using an official image.
+  db:
+    image: postgres:15 # Use the full Postgres 15 image for better compatibility
+    container_name: postgres_db
+    environment:
+      # Database credentials are read from the .env file on the host machine
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432" # Map the standard Postgres port
+    volumes:
+      # Use a named volume to persist database data across container restarts
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+# Define the named volume for persistent database storage
+volumes:
+  postgres_data:

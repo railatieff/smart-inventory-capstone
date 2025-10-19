@@ -1,0 +1,63 @@
+/*
+ * Global CSS styles for the frontend application.
+ * Most base styles are provided by Pico.css (linked in _document.js).
+ * This file contains overrides and custom component styles.
+ */
+
+/* Custom styles for the product card */
+article.product-card {
+  margin-bottom: 1rem;
+  padding: 1.5rem;
+  /* Add a subtle transition for hover effects if desired */
+  /* transition: box-shadow 0.2s ease-in-out; */
+}
+/* Optional: Add a hover effect for clickable cards on the index page */
+/* main div#product-list-links article.product-card:hover {
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+} */
+
+article.product-card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+article.product-card h3 {
+  margin-bottom: 0.5rem;
+}
+
+article.product-card p.attributes {
+  font-style: italic;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+/* Styling for the AI description box */
+article.product-card .description {
+  background-color: #f7f7f7;
+  padding: 1rem;
+  border-radius: 5px;
+  white-space: pre-wrap; /* Preserve line breaks from AI output */
+}
+
+/* Style for the description box when AI is generating */
+article.product-card .description.loading {
+  color: #888;
+  text-align: center;
+}
+
+/* Footer section of the card (for buttons on the detail page) */
+article.product-card footer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 0.5rem; /* Space between buttons */
+}
+
+/* Hide the 'Generate AI' button if the product already has a description */
+/* Note: This is now primarily handled by conditional rendering in React,
+   but can serve as a fallback or additional styling rule. */
+.has-description .btn-generate-ai {
+  display: none;
+}

@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install backend dependencies
-RUN npm install
+RUN yarn install --frozen-lockfile
 
 # Copy the rest of the backend source code into the container
 COPY . .
